@@ -33,22 +33,35 @@ type RWGoods struct {
 	m *sync.RWMutex
 }
 
+func (rw *RWGoods) RVal(key string) int {
+	rw.m.RLock()
+	defer rw.m.RUnlock()
+	return rw.v[key]
+}
+
+func (rw *RWGoods) WVal(key string, val int) {
+	rw.m.Lock()
+	defer rw.m.Unlock()
+	rw.v[key] = val
+}
+
 func main() {
-	M := sync.Mutex{}
+	M := &sync.Mutex{}
 	g := Goods{
 		v: make(map[string]int),
-		m: &M,
+		m: M,
 	}
 	for i := 0; i < 10; i++ {
 		go g.Increase("Goods1\n", i)
 	}
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Microsecond)
 	fmt.Println(g.Value("Goods1\n"))
 
-	// RWM := sync.RWMutex{}
-	// g2 := RWGoods{
-	// v: make(map[string]int),
-	// m: &RWM,
-	// }
-	// ...
+	RWM := sync.RWMutex{}
+	g2 := RWGoods{
+		v: make(map[string]int),
+		m: &RWM,
+	}
+	g2.WVal("key1", 1)
+	fmt.Printf("g2.RVal(key1)=%v\n", g2.RVal("key1"))
 }
