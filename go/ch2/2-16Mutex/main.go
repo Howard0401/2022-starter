@@ -9,7 +9,7 @@ import (
 // Lock
 type Goods struct {
 	v map[string]int
-	m *sync.Mutex
+	m sync.Mutex
 }
 
 func (g *Goods) Increase(key string, in int) {
@@ -30,7 +30,7 @@ func (g *Goods) Value(key string) int {
 //Lock RWLock
 type RWGoods struct {
 	v map[string]int
-	m *sync.RWMutex
+	m sync.RWMutex
 }
 
 func (rw *RWGoods) RVal(key string) int {
@@ -46,10 +46,10 @@ func (rw *RWGoods) WVal(key string, val int) {
 }
 
 func main() {
-	M := &sync.Mutex{}
+	// https://stackoverflow.com/questions/49808622/sync-mutex-and-sync-mutex-which-is-better
 	g := Goods{
 		v: make(map[string]int),
-		m: M,
+		m: sync.Mutex{},
 	}
 	for i := 0; i < 10; i++ {
 		go g.Increase("Goods1\n", i)
@@ -57,10 +57,9 @@ func main() {
 	time.Sleep(100 * time.Microsecond)
 	fmt.Println(g.Value("Goods1\n"))
 
-	RWM := sync.RWMutex{}
 	g2 := RWGoods{
 		v: make(map[string]int),
-		m: &RWM,
+		m: sync.RWMutex{},
 	}
 	g2.WVal("key1", 1)
 	fmt.Printf("g2.RVal(key1)=%v\n", g2.RVal("key1"))
