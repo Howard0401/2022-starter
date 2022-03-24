@@ -1,0 +1,1 @@
+go test -bench  . -v -benchmem -run=none sync_vs_channel_test.go
