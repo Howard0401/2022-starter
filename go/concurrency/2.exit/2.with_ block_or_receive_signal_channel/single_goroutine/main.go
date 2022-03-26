@@ -30,7 +30,7 @@ func Event(f func(arg ...interface{}) error, args ...interface{}) chan error {
 func main() {
 	event1 := Event(worker, 2)
 	fmt.Printf("Event1 begin\n")
-	err := <-event1
+	err := <-event1 // if send message, quit event1
 	fmt.Printf("err=%v\n", err)
 	fmt.Printf("Event1 done\n")
 

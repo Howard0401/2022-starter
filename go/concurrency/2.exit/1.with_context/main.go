@@ -37,6 +37,6 @@ func (s *Signal) DO(ctx context.Context) context.Context {
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	sig := Signal{}
-	DoEvent(&sig, ctx)
+	DoEvent(&sig, ctx) // abstract factory
 	cancel()
 }
