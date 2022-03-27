@@ -41,7 +41,7 @@ func ConcurrencyShutdown(timeout time.Duration, shutdowners ...GracefulShoutdown
 	}
 }
 
-// TODO: study flow
+// TODO: study flow??
 func SequentialShutdown(timeout time.Duration, shutdowners ...GracefulShoutdown) error { // 原來還可以這樣傳interface...
 	c := make(chan struct{})
 	start := time.Now()
@@ -52,7 +52,7 @@ func SequentialShutdown(timeout time.Duration, shutdowners ...GracefulShoutdown)
 		elasped := time.Since(start)
 		left = timeout - elasped
 		go func(shutdowner GracefulShoutdown) {
-			shutdowner.Shutdown(left)
+			shutdowner.Shutdown(left) // remains time
 		}(v)
 		c <- struct{}{}
 	}
