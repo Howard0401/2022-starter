@@ -28,7 +28,6 @@ func square(in int) (int, bool) {
 }
 
 func Event(id string, num int, f func(int) (int, bool), in <-chan int) <-chan int {
-
 	var fanOutResult []chan int
 	fanOutChan := make(chan int)
 	// send message to several channel
@@ -68,8 +67,9 @@ func Event(id string, num int, f func(int) (int, bool), in <-chan int) <-chan in
 }
 
 func main() {
-	in := GetPipeLine(1, 20)
+	in := GetPipeLine(1, 40000)
 	out := Event("task1", 3, square, Event("task1", 2, filterOdd, in))
+	// time.Sleep(5 * time.Second)
 	for v := range out {
 		fmt.Printf("v=%v\n", v)
 	}
