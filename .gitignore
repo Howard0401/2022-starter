@@ -5,6 +5,7 @@
 *.so
 *.dylib
 
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
